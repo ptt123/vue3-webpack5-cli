@@ -1,6 +1,6 @@
 import {createPinia, defineStore} from 'pinia'
 // 数据持久化plugins
-import piniaPersist from 'pinia-plugin-persist'
+import piniaPersist from '@/utils/pinia-plugin-persist'
 import piniaPersistConfig from '@/config/piniaPersist'
 import {getUsers} from '@/api/modules/app'
 

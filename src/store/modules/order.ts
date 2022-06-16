@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import pinia from '@/store'
 import piniaPersistConfig from "@/config/piniaPersist"
 
 // OrderState
@@ -19,3 +20,8 @@ export const useOrderStore = defineStore({
     },
     persist: piniaPersistConfig('OrderStore')
 })
+
+// Using the store outside of setup()
+export const useOrderStoreWithOut = () => {
+    return useOrderStore(pinia)
+}

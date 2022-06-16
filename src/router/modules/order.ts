@@ -10,6 +10,14 @@ const OrderRouter: RouteRecordRaw[] = [
 		meta: {
 			title: "订单列表"
 		}
+	},
+	{
+		path: '/orderDetail',
+		name: 'orderDetail',
+		component: () => import('@/views/orderDetail.vue'),
+		meta: {
+			title: '订单详情'
+		}
 	}
 ];
 

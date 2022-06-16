@@ -14,9 +14,12 @@
 <script lang="ts" setup>
     import TabbarItem from '@/components/tabbar-item/index.vue'
     import {reactive, computed} from 'vue'
-    import {useRouter} from 'vue-router'
+    import {useRouter, useRoute} from 'vue-router'
+    // import { useOrderStore } from "@/store/modules/order"
+    // const orderStore = useOrderStore()
 
     const rotuer = useRouter()
+    const route = useRoute()
     
     const tabbar: Array<Tabbar> = reactive([
         {
@@ -36,7 +39,7 @@
     const computedTabbar = computed(() => {
         const tabbarCopy = [...tabbar]
         tabbarCopy.forEach((item) => {
-            item.select = rotuer.currentRoute.value.path == item.path
+            item.select = route.path == item.path
         })
         return tabbarCopy
     })

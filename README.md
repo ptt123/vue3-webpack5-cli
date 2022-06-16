@@ -918,11 +918,92 @@ export const goodsList = (params: any) => {
 </script>
 ```
 #### 2.8.2 集成vue-router
-（1）新建/src/router/router.ts
-（2）新建/src/router/index.ts
-（3）新建/src/router/modules/goods.ts
-#### 2.8.3 集成pinia
+（1）新建
+  + /src/router/router.ts
+  + /src/router/index.ts
+  + /src/router/modules/home.ts
+  + /src/router/modules/mall.ts
+  + /src/router/modules/user.ts
+具体代码就不贴了，见源码   
 
+（2）修改/src/main.ts vue-router挂到app应用上
+```js
+import { createApp } from 'vue'
+import App from './App.vue'
+import router from '@/router/index'
+const app = createApp(App) // 初始化app
+app.use(router).mount('#app') // 将app挂载到app节点上
+```
+
+（3）修改/src/App.vue
+这里有一个注意的点[router-view、keep-alive和transition一起使用](https://router.vuejs.org/zh/guide/migration/index.html#router-view-%E3%80%81-keep-alive-%E5%92%8C-transition)    
+
+（4）在script-setup中使用router
+```html
+<script setup>
+  import {useRouter, useRoute} from 'vue-router'
+  const rotuer = useRouter()
+  const route = useRoute()
+  rotuer.push()
+</script>
+```
+#### 2.8.3 集成pinia
+（1）新建
++ /store/index.ts
++ /store/modules/order.ts
+这里具体实现代码也不贴了，见源码   
+> 这里有个注意的点：pinia-plugin-persist插件的数据持久化的问题。我们发现有些时候持久化数据更新失败了。
+我们看pinia-plugin-persist的源码
+```js
+// 在$subscribe中实现数据持久化
+store.$subscribe(() => {
+  strategies.forEach((strategy) => {
+    // 存缓存
+    updateStorage(strategy, store)
+  })
+})
+```
+我们再看pinia官网 [关于$subscribe api](https://pinia.vuejs.org/core-concepts/state.html#subscribing-to-the-state) 组件卸载后state subscriptions也没有了，就不会更新持久化数据了。
+
+解决方法：
++ 首次使用state subscriptions（首次使用store）在不会卸载的组件中，比如App.vue中
++ 重写pinia-plugin-persist的源码$subscribe加上第二个参数{detached: true}
+
+（2）修改/src/main.ts
+```js
+import { createApp } from 'vue'
+import App from './App.vue'
+import router from '@/router/index'
+import pinia from "@/store/index"
+const app = createApp(App) // 初始化app
+app.use(router).use(pinia).mount('#app') // 将app挂载到app节点上
+```
+（3）在script-setup中使用pinia   
+```html
+<script lang="ts" setup>
+    import { useGlobalStore } from '@/store'
+    const GlobalStore = useGlobalStore()
+    GlobalStore.setToken('token') // 通过actions更改state
+    GlobalStore.setUserId('userid') // 通过actions更改state
+    // 我们也可以批量更改state $fetch api
+    GlobalStore.$patch((state) => {
+        state.token = 'token'
+        state.userid = 'userid'
+    })
+    GlobalStore.setUserInfo()
+</script>
+```
+
+（4）在script-setup外使用pinia
+```js
+import { useStore } from '~/stores/myStore'
+
+export default {
+  asyncData({ $pinia }) {
+    const store = useStore($pinia)
+  },
+}
+```
 ### 2.9 规范开发目录结构
 ```bash
 ├─build
