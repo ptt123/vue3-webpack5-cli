@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import pinia from '@/store'
-import piniaPersistConfig from "@/config/piniaPersist"
+import piniaPersistConfig from '@/config/piniaPersist'
 
 // OrderState
 export const useOrderStore = defineStore({

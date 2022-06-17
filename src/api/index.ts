@@ -32,21 +32,21 @@ class RequestHttp {
                 localStorage.clear()
                 // 跳转登陆页
                 router.replace({
-                    path: "/login"
-                });
+                    path: '/login'
+                })
                 return Promise.reject(data)
             }
             if (data.code && data.code !== ResultEnum.SUCCESS) {
                 return Promise.reject(data)
             }
-            return data;
+            return data
         },
         (error: AxiosError) => {
             const code = error?.response?.status as number
             if ([ResultEnum.UNAUTHORIZED, ResultEnum.OVERDUE].includes(code)) {
                 // 跳转登陆页
                 router.replace({
-                    path: "/login"
+                    path: '/login'
                 })
             }
             return Promise.reject(error)

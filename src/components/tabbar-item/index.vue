@@ -1,8 +1,8 @@
 <template>
-    <div  :class="[item.select ?　'selected-tabbar-item' : '', 'tabbar-item']">
-        <img :src="item.iconPath"/>
-        <div>{{item.text}}</div>
-    </div>
+  <div :class="[item.select ? 'selected-tabbar-item' : '', 'tabbar-item']">
+    <img :src="item.iconPath">
+    <div>{{ item.text }}</div>
+  </div>
 </template>
 
 <script lang="ts" setup>
@@ -12,6 +12,7 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
     item: () => ({})
 })
+console.log('props', props)
 </script>
 
 <style lang="less" scoped>

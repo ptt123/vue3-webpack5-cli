@@ -1,7 +1,7 @@
 <template>这是商城</template>
 <script lang="ts">
 export default {
-    name: 'mall'
+	name: 'Mall',
 }
 </script>
 <script setup lang="ts"></script>

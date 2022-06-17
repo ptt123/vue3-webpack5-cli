@@ -3,7 +3,7 @@ const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const {CleanWebpackPlugin} = require('clean-webpack-plugin')
 const { VueLoaderPlugin } = require('vue-loader/dist/index')
-const MiniCssExtractPlugin = require("mini-css-extract-plugin") // 提取js中的css文件
+const MiniCssExtractPlugin = require('mini-css-extract-plugin') // 提取js中的css文件
 
 module.exports = {
   entry: ['@babel/polyfill', path.resolve(__dirname, '../src/main.ts')], // 打包入口
@@ -20,8 +20,8 @@ module.exports = {
     new CleanWebpackPlugin(),
     new VueLoaderPlugin(),
     new MiniCssExtractPlugin({
-      filename: "css/[name].[hash:8].css",
-      chunkFilename: "[id].css"
+      filename: 'css/[name].[hash:8].css',
+      chunkFilename: '[id].css'
     })
   ],
   resolve: {

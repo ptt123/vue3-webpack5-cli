@@ -2,8 +2,8 @@
 const path = require('path')
 const WebpackConfig = require('./webpack.config.js')
 const {merge} = require('webpack-merge')
-const CssMinimizerPlugin = require("css-minimizer-webpack-plugin")
-const TerserPlugin = require("terser-webpack-plugin")
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
+const TerserPlugin = require('terser-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 module.exports = merge(WebpackConfig, {

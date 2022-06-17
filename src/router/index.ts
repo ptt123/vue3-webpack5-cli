@@ -1,4 +1,4 @@
-import router, {routes} from "@/router/router"
+import router, {routes} from '@/router/router'
 
 router.beforeEach((to, from, next) => {
     // 不需要授权的路由直接跳转
@@ -24,6 +24,7 @@ router.beforeEach((to, from, next) => {
 })
 
 router.afterEach(() => {
+    console.log('router.afterEach')
 })
 
 export default router

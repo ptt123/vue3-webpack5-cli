@@ -6,7 +6,7 @@ import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
 const routerContext = require.context('./modules/', true, /\./)
 
 // * 处理路由
-export const routerArray: RouteRecordRaw[] = [];
+export const routerArray: RouteRecordRaw[] = []
 
 routerContext.keys().forEach((routerKey: any) => {
     routerArray.push(...routerContext(routerKey).default)
@@ -17,13 +17,13 @@ export const routes: RouteRecordRaw[] = [
         redirect: {name: 'login'}
     },
     {
-		path: "/login",
-		name: "login",
-		component: () => import("@/views/login.vue"),
+		path: '/login',
+		name: 'login',
+		component: () => import('@/views/login.vue'),
 		meta: {
 			requiresAuth: false,
-			title: "登录页",
-			key: "login"
+			title: '登录页',
+			key: 'login'
 		}
 	},
     ...routerArray

@@ -1,15 +1,14 @@
-import { RouteRecordRaw } from "vue-router"
-const Layout = () => import("@/layout/index.vue")
+import { RouteRecordRaw } from 'vue-router'
 
 // 常用组件模块
 const UserRouter: RouteRecordRaw[] = [
 	{
-		path: "/user",
+		path: '/user',
 		component: () => import('@/views/user.vue'),
 		meta: {
-			title: "个人中心"
+			title: '个人中心'
 		}
 	}
-];
+]
 
 export default UserRouter

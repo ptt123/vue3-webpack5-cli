@@ -1,14 +1,13 @@
-import { RouteRecordRaw } from "vue-router"
-const Layout = () => import("@/layout/index.vue")
+import { RouteRecordRaw } from 'vue-router'
 
 // 常用组件模块
 const OrderRouter: RouteRecordRaw[] = [
 	{
-		path: "/orderList",
+		path: '/orderList',
 		name: 'orderList',
 		component: () => import('@/views/orderList.vue'),
 		meta: {
-			title: "订单列表"
+			title: '订单列表'
 		}
 	},
 	{
@@ -19,6 +18,6 @@ const OrderRouter: RouteRecordRaw[] = [
 			title: '订单详情'
 		}
 	}
-];
+]
 
 export default OrderRouter

@@ -1,16 +1,15 @@
-import { RouteRecordRaw } from "vue-router"
-const Layout = () => import("@/layout/index.vue")
+import { RouteRecordRaw } from 'vue-router'
 
 // 常用组件模块
 const MallRouter: RouteRecordRaw[] = [
 	{
-		path: "/mall",
+		path: '/mall',
 		component: () => import('@/views/mall.vue'),
 		meta: {
-			title: "商城",
+			title: '商城',
 			needAuth: true
 		}
 	}
-];
+]
 
 export default MallRouter
