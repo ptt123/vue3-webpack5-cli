@@ -1,9 +1,5 @@
-<template>
-	这是layout布局
-</template>
+<template>这是layout布局</template>
 
-<script setup lang="ts">
-</script>
+<script setup lang="ts"></script>
 
-<style scoped lang="less">
-</style>
+<style scoped lang="less"></style>
