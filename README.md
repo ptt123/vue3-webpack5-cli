@@ -40,12 +40,12 @@ npm run build
 const path = require('path')
 
 module.exports = {
-	mode: 'development', // 环境模式
-	entry: path.resolve(__dirname, '../src/main.js'), // 打包入口
-	output: {
-		path: path.resolve(__dirname, '../dist'), // 打包出口
-		filename: 'js/[name].[hash:8].js', // 打包完的静态资源文件名
-	},
+  mode: 'development', // 环境模式
+  entry: path.resolve(__dirname, '../src/main.js'), // 打包入口
+  output: {
+    path: path.resolve(__dirname, '../dist'), // 打包出口
+    filename: 'js/[name].[hash:8].js', // 打包完的静态资源文件名
+  },
 }
 ```
 
@@ -82,19 +82,19 @@ const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
-	mode: 'development', // 环境模式
-	entry: path.resolve(__dirname, '../src/main.js'), // 打包入口
-	output: {
-		path: path.resolve(__dirname, '../dist'), // 打包出口
-		filename: 'js/[name].[hash:8].js', // 打包完的静态资源文件名
-	},
-	plugins: [
-		new HtmlWebpackPlugin({
-			template: path.resolve(__dirname, '../public/index.html'), // 我们要使用的 html 模板地址
-			filename: 'index.html', // 打包后输出的文件名
-			title: '从0到1手搭Vue开发环境', // index.html 模板内，通过 <%= htmlWebpackPlugin.options.title %> 拿到的变量
-		}),
-	],
+  mode: 'development', // 环境模式
+  entry: path.resolve(__dirname, '../src/main.js'), // 打包入口
+  output: {
+    path: path.resolve(__dirname, '../dist'), // 打包出口
+    filename: 'js/[name].[hash:8].js', // 打包完的静态资源文件名
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: path.resolve(__dirname, '../public/index.html'), // 我们要使用的 html 模板地址
+      filename: 'index.html', // 打包后输出的文件名
+      title: '从0到1手搭Vue开发环境', // index.html 模板内，通过 <%= htmlWebpackPlugin.options.title %> 拿到的变量
+    }),
+  ],
 }
 ```
 
@@ -103,15 +103,15 @@ module.exports = {
 ```html
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
-		<title><%= htmlWebpackPlugin.options.title %></title>
-	</head>
-	<body>
-		<div id="app"></div>
-	</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <title><%= htmlWebpackPlugin.options.title %></title>
+  </head>
+  <body>
+    <div id="app"></div>
+  </body>
 </html>
 ```
 
@@ -158,10 +158,10 @@ npm i -S vue
 
 ```html
 <template>
-	<div>拥抱vue3.x</div>
+  <div>拥抱vue3.x</div>
 </template>
 <script>
-	export default {}
+  export default {}
 </script>
 <style></style>
 ```
@@ -243,15 +243,15 @@ npm run build
 
 ```html
 <template>
-	<div class="app-wrapper">拥抱vue3.x</div>
+  <div class="app-wrapper">拥抱vue3.x</div>
 </template>
 <script>
-	export default {}
+  export default {}
 </script>
 <style scoped>
-	.app-wrapper {
-		color: red;
-	}
+  .app-wrapper {
+    color: red;
+  }
 </style>
 ```
 
@@ -320,9 +320,9 @@ npm run build
 ```html
 ...
 <style scoped lang="less">
-	.app-wrapper {
-		color: red;
-	}
+  .app-wrapper {
+    color: red;
+  }
 </style>
 ```
 
@@ -436,11 +436,11 @@ module.exports = {
 
 ```html
 <style scoped lang="less">
-	.app-wrapper {
-		display: flex;
-		color: red;
-		width: 750px;
-	}
+  .app-wrapper {
+    display: flex;
+    color: red;
+    width: 750px;
+  }
 </style>
 ```
 
@@ -448,14 +448,14 @@ module.exports = {
 
 ```json
 {
-	"browserslist": [
-		"defaults",
-		"not ie < 11",
-		"last 3 versions",
-		"> 0.2%",
-		"iOS 7",
-		"last 3 iOS versions"
-	]
+  "browserslist": [
+    "defaults",
+    "not ie < 11",
+    "last 3 versions",
+    "> 0.2%",
+    "iOS 7",
+    "last 3 iOS versions"
+  ]
 }
 ```
 
@@ -467,12 +467,12 @@ ok，我们在来打包 npm run build，这里我们也是打包成功的
 
 ```css
 .app-wrapper[data-v-7ba5bd90] {
-	display: -webkit-box;
-	display: -webkit-flex;
-	display: -ms-flexbox;
-	display: flex;
-	color: red;
-	width: 100vw;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  color: red;
+  width: 100vw;
 }
 ```
 
@@ -482,37 +482,37 @@ ok，我们在来打包 npm run build，这里我们也是打包成功的
 
 ```js
 module.exports = {
-	plugins: [
-		// require('autoprefixer')({
-		// "overrideBrowserslist": [
-		//     "> 1%",
-		//     "last 7 versions",
-		//     "not ie <= 8",
-		//     "ios >= 8",
-		//     "android >= 4.0"
-		// ]
-		// }),
-		require('postcss-preset-env')(), // postcss-preset-env已经内置了autoprefixer了
-		require('postcss-px-to-viewport')({
-			unitToConvert: 'px', // 需要转换的单位，默认为"px"
-			viewportWidth: 750, // 设计稿的视窗宽度
-			unitPrecision: 3, // 单位转换后保留的精度
-			propList: [
-				// 能转化为 vw 的属性列表
-				'*',
-			],
-			viewportUnit: 'vw', // 希望使用的视窗单位
-			fontViewportUnit: 'vw', // 字体使用的视窗单位
-			selectorBlackList: [], // 需要忽略的 CSS 选择器，不会转为视窗单位，使用原有的 px 等单位
-			minPixelValue: 1, // 设置最小的转换数值，如果为 1 的话，只有大于 1 的值会被转换
-			mediaQuery: false, // 媒体查询里的单位是否需要转换单位
-			replace: true, // 是否直接更换属性值，而不添加备用属性
-			exclude: /(\/|\\)(node_modules)(\/|\\)/, // 忽略某些文件夹下的文件或特定文件，例如 'node_modules' 下的文件
-			include: /\/src\//, // 如果设置了include，那将只有匹配到的文件才会被转换
-			landscapeUnit: 'vw', // 横屏时使用的单位
-			landscapeWidth: 1125, // 横屏时使用的视窗宽度
-		}),
-	],
+  plugins: [
+    // require('autoprefixer')({
+    // "overrideBrowserslist": [
+    //     "> 1%",
+    //     "last 7 versions",
+    //     "not ie <= 8",
+    //     "ios >= 8",
+    //     "android >= 4.0"
+    // ]
+    // }),
+    require('postcss-preset-env')(), // postcss-preset-env已经内置了autoprefixer了
+    require('postcss-px-to-viewport')({
+      unitToConvert: 'px', // 需要转换的单位，默认为"px"
+      viewportWidth: 750, // 设计稿的视窗宽度
+      unitPrecision: 3, // 单位转换后保留的精度
+      propList: [
+        // 能转化为 vw 的属性列表
+        '*',
+      ],
+      viewportUnit: 'vw', // 希望使用的视窗单位
+      fontViewportUnit: 'vw', // 字体使用的视窗单位
+      selectorBlackList: [], // 需要忽略的 CSS 选择器，不会转为视窗单位，使用原有的 px 等单位
+      minPixelValue: 1, // 设置最小的转换数值，如果为 1 的话，只有大于 1 的值会被转换
+      mediaQuery: false, // 媒体查询里的单位是否需要转换单位
+      replace: true, // 是否直接更换属性值，而不添加备用属性
+      exclude: /(\/|\\)(node_modules)(\/|\\)/, // 忽略某些文件夹下的文件或特定文件，例如 'node_modules' 下的文件
+      include: /\/src\//, // 如果设置了include，那将只有匹配到的文件才会被转换
+      landscapeUnit: 'vw', // 横屏时使用的单位
+      landscapeWidth: 1125, // 横屏时使用的视窗宽度
+    }),
+  ],
 }
 ```
 
@@ -602,14 +602,14 @@ npm run build 打包成功了，css 被抽离到一个单独的 css 文件中去
 
 ```html
 <template>
-	<div class="app-wrapper">
-		<div class="app-wrapper">
-			<!-- 大于4kb的图片 -->
-			<img src="./assets/images/logo.png" />
-			<!-- 小于4kb的图片 -->
-			<img src="./assets/images/address.png" />
-		</div>
-	</div>
+  <div class="app-wrapper">
+    <div class="app-wrapper">
+      <!-- 大于4kb的图片 -->
+      <img src="./assets/images/logo.png" />
+      <!-- 小于4kb的图片 -->
+      <img src="./assets/images/address.png" />
+    </div>
+  </div>
 </template>
 ```
 
@@ -693,16 +693,16 @@ module.exports = {
 
 ```js
 module.exports = {
-	presets: [
-		[
-			'@babel/preset-env',
-			{
-				targets: {
-					browsers: ['last 2 versions'], // 最近2个版本的浏览器
-				},
-			},
-		],
-	],
+  presets: [
+    [
+      '@babel/preset-env',
+      {
+        targets: {
+          browsers: ['last 2 versions'], // 最近2个版本的浏览器
+        },
+      },
+    ],
+  ],
 }
 ```
 
@@ -726,16 +726,16 @@ export default defineComponent({
 
 ```js
 module.exports = {
-	presets: [
-		[
-			'@babel/preset-env',
-			{
-				targets: {
-					browsers: ['last 1 chrome version'], // 最新1个谷歌版本
-				},
-			},
-		],
-	],
+  presets: [
+    [
+      '@babel/preset-env',
+      {
+        targets: {
+          browsers: ['last 1 chrome version'], // 最新1个谷歌版本
+        },
+      },
+    ],
+  ],
 }
 ```
 
@@ -746,7 +746,7 @@ babel-loader 只会将部分 es6+代码转换成 es5，有些 api（如 promise/
 
 ```js
 module.exports = {
-	entry: ['@babel/polyfill', path.resolve(__dirname, '../src/main.js')], // 打包入口
+  entry: ['@babel/polyfill', path.resolve(__dirname, '../src/main.js')], // 打包入口
 }
 ```
 
@@ -777,10 +777,10 @@ module.exports = {
 
 ```json
 {
-	"scripts": {
-		"dev": "webpack-dev-server --config build/webpack.config.js --open",
-		"build": "webpack --config build/webpack.config.js"
-	}
+  "scripts": {
+    "dev": "webpack-dev-server --config build/webpack.config.js --open",
+    "build": "webpack --config build/webpack.config.js"
+  }
 }
 ```
 
@@ -817,12 +817,12 @@ const { merge } = require('webpack-merge')
 process.env.NODE_ENV = 'development'
 
 module.exports = merge(WebpackConfig, {
-	mode: 'development',
-	devtool: 'source-map',
-	devServer: {
-		port: 8889,
-		static: '../dist',
-	},
+  mode: 'development',
+  devtool: 'source-map',
+  devServer: {
+    port: 8889,
+    static: '../dist',
+  },
 })
 ```
 
@@ -838,21 +838,21 @@ const TerserPlugin = require('terser-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 module.exports = merge(WebpackConfig, {
-	mode: 'production',
-	optimization: {
-		minimizer: [new CssMinimizerPlugin(), new TerserPlugin()],
-	},
-	plugins: [
-		// 处理静态文件夹static，复制到打包的static文件夹
-		new CopyWebpackPlugin({
-			patterns: [
-				{
-					from: path.resolve(__dirname, '../static'),
-					to: path.resolve(__dirname, '../dist/static'),
-				},
-			],
-		}),
-	],
+  mode: 'production',
+  optimization: {
+    minimizer: [new CssMinimizerPlugin(), new TerserPlugin()],
+  },
+  plugins: [
+    // 处理静态文件夹static，复制到打包的static文件夹
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          from: path.resolve(__dirname, '../static'),
+          to: path.resolve(__dirname, '../dist/static'),
+        },
+      ],
+    }),
+  ],
 })
 ```
 
@@ -860,10 +860,10 @@ module.exports = merge(WebpackConfig, {
 
 ```json
 {
-	"scripts": {
-		"dev": "webpack-dev-server --config build/webpack.dev.js --open",
-		"build": "webpack --config build/webpack.prod.js"
-	}
+  "scripts": {
+    "dev": "webpack-dev-server --config build/webpack.dev.js --open",
+    "build": "webpack --config build/webpack.prod.js"
+  }
 }
 ```
 
@@ -889,22 +889,22 @@ npx tsc --init
 
 ```js
 module.exports = {
-	presets: [
-		[
-			'@babel/preset-env',
-			{
-				targets: {
-					browsers: ['last 2 versions'],
-				},
-			},
-		],
-		[
-			'@babel/preset-typescript',
-			{
-				allExtensions: true, // 支持所有文件扩展名，否则在vue文件中使用ts会报错
-			},
-		],
-	],
+  presets: [
+    [
+      '@babel/preset-env',
+      {
+        targets: {
+          browsers: ['last 2 versions'],
+        },
+      },
+    ],
+    [
+      '@babel/preset-typescript',
+      {
+        allExtensions: true, // 支持所有文件扩展名，否则在vue文件中使用ts会报错
+      },
+    ],
+  ],
 }
 ```
 
@@ -913,9 +913,9 @@ module.exports = {
 ```ts
 // shims-vue.d.ts
 declare module '*.vue' {
-	import type { DefineComponent } from 'vue'
-	const component: DefineComponent<{}, {}, any>
-	export default component
+  import type { DefineComponent } from 'vue'
+  const component: DefineComponent<{}, {}, any>
+  export default component
 }
 ```
 
@@ -923,16 +923,16 @@ declare module '*.vue' {
 
 ```js
 module.exports = {
-	//...
-	module: {
-		rules: [
-			{
-				test: /\.(js|ts)x?$/,
-				exclude: /node_modules/, // 不编译node_modules下的文件
-				use: ['babel-loader'],
-			},
-		],
-	},
+  //...
+  module: {
+    rules: [
+      {
+        test: /\.(js|ts)x?$/,
+        exclude: /node_modules/, // 不编译node_modules下的文件
+        use: ['babel-loader'],
+      },
+    ],
+  },
 }
 ```
 
@@ -941,14 +941,14 @@ module.exports = {
 ```html
 <!-- 省略template -->
 <script setup lang="ts">
-	import Tabbar from '@/components/tabbar/index.vue'
-	import { goodsList } from '@/api/modules/goods'
+  import Tabbar from '@/components/tabbar/index.vue'
+  import { goodsList } from '@/api/modules/goods'
 
-	const getGoods = async () => {
-		const res = await goodsList({})
-		console.log('res', res)
-	}
-	getGoods()
+  const getGoods = async () => {
+    const res = await goodsList({})
+    console.log('res', res)
+  }
+  getGoods()
 </script>
 ```
 
@@ -958,12 +958,12 @@ Module not found: Error: Can't resolve '@/api/modules/goods' in 'F:\github\vue3-
 
 ```js
 module.exports = {
-	//..省略其他配置
-	resolve: {
-		// ...省略其他配置
-		// 尝试按顺序解析这些后缀名。如果有多个文件有相同的名字，但后缀名不同，webpack 会解析列在数组首位的后缀的文件 并跳过其余的后缀。
-		extensions: ['', '.js', '.jsx', '.ts', '.tsx'],
-	},
+  //..省略其他配置
+  resolve: {
+    // ...省略其他配置
+    // 尝试按顺序解析这些后缀名。如果有多个文件有相同的名字，但后缀名不同，webpack 会解析列在数组首位的后缀的文件 并跳过其余的后缀。
+    extensions: ['', '.js', '.jsx', '.ts', '.tsx'],
+  },
 }
 ```
 
@@ -985,53 +985,53 @@ import configs from '@/config/index'
 import { ResultEnum } from '@/enums/httpEnum'
 
 const config = {
-	baseURL: process.env.NODE_ENV === 'production' ? configs.baseURL.pro : configs.baseURL.dev,
-	timeout: configs.timeout,
-	withCredentials: true,
+  baseURL: process.env.NODE_ENV === 'production' ? configs.baseURL.pro : configs.baseURL.dev,
+  timeout: configs.timeout,
+  withCredentials: true,
 }
 
 class RequestHttp {
-	service: AxiosInstance
-	constructor(config: AxiosRequestConfig) {
-		// 实例化
-		this.service = axios.create(config)
-		// 请求拦截器
-		this.service.interceptors.request.use(
-			(config: AxiosRequestConfig) => {
-				const token = '' // 本地缓存
-				return { ...config, headers: { authorization: token } }
-			},
-			(error: AxiosError) => {
-				return Promise.reject(error)
-			}
-		)
-		// 响应拦截器
-		this.service.interceptors.response.use(
-			(response: AxiosResponse) => {
-				const { data } = response
-				// * 登陆失效（code ==406）
-				if (data.code == ResultEnum.OVERDUE) {
-					// 清空token
-					// 跳转登陆页
-					return Promise.reject(data)
-				}
-				if (data.code && data.code !== ResultEnum.SUCCESS) {
-					return Promise.reject(data)
-				}
-				return data
-			},
-			(error: AxiosError) => {
-				return Promise.reject(error)
-			}
-		)
-	}
-	request({ url, method, data }: any) {
-		return this.service.request({
-			url,
-			method,
-			[['delete', 'get'].includes(method) ? 'params' : 'data']: data,
-		})
-	}
+  service: AxiosInstance
+  constructor(config: AxiosRequestConfig) {
+    // 实例化
+    this.service = axios.create(config)
+    // 请求拦截器
+    this.service.interceptors.request.use(
+      (config: AxiosRequestConfig) => {
+        const token = '' // 本地缓存
+        return { ...config, headers: { authorization: token } }
+      },
+      (error: AxiosError) => {
+        return Promise.reject(error)
+      },
+    )
+    // 响应拦截器
+    this.service.interceptors.response.use(
+      (response: AxiosResponse) => {
+        const { data } = response
+        // * 登陆失效（code ==406）
+        if (data.code == ResultEnum.OVERDUE) {
+          // 清空token
+          // 跳转登陆页
+          return Promise.reject(data)
+        }
+        if (data.code && data.code !== ResultEnum.SUCCESS) {
+          return Promise.reject(data)
+        }
+        return data
+      },
+      (error: AxiosError) => {
+        return Promise.reject(error)
+      },
+    )
+  }
+  request({ url, method, data }: any) {
+    return this.service.request({
+      url,
+      method,
+      [['delete', 'get'].includes(method) ? 'params' : 'data']: data,
+    })
+  }
 }
 
 export default new RequestHttp(config)
@@ -1042,11 +1042,11 @@ export default new RequestHttp(config)
 ```js
 import HttpInstance from '@/api'
 export const goodsList = (params: any) => {
-	return HttpInstance.request({
-		url: 'xxx',
-		method: 'get',
-		data: params,
-	})
+  return HttpInstance.request({
+    url: 'xxx',
+    method: 'get',
+    data: params,
+  })
 }
 ```
 
@@ -1054,12 +1054,12 @@ export const goodsList = (params: any) => {
 
 ```html
 <script setup lang="ts">
-	import { goodsList } from '@/api/modules/goods'
-	const getGoods = async () => {
-		const res = await goodsList({})
-		console.log('res', res)
-	}
-	getGoods()
+  import { goodsList } from '@/api/modules/goods'
+  const getGoods = async () => {
+    const res = await goodsList({})
+    console.log('res', res)
+  }
+  getGoods()
 </script>
 ```
 
@@ -1091,10 +1091,10 @@ app.use(router).mount('#app') // 将app挂载到app节点上
 
 ```html
 <script setup>
-	import { useRouter, useRoute } from 'vue-router'
-	const rotuer = useRouter()
-	const route = useRoute()
-	rotuer.push()
+  import { useRouter, useRoute } from 'vue-router'
+  const rotuer = useRouter()
+  const route = useRoute()
+  rotuer.push()
 </script>
 ```
 
@@ -1111,10 +1111,10 @@ app.use(router).mount('#app') // 将app挂载到app节点上
 ```js
 // 在$subscribe中实现数据持久化
 store.$subscribe(() => {
-	strategies.forEach((strategy) => {
-		// 存缓存
-		updateStorage(strategy, store)
-	})
+  strategies.forEach((strategy) => {
+    // 存缓存
+    updateStorage(strategy, store)
+  })
 })
 ```
 
@@ -1140,16 +1140,16 @@ app.use(router).use(pinia).mount('#app') // 将app挂载到app节点上
 
 ```html
 <script lang="ts" setup>
-	import { useGlobalStore } from '@/store'
-	const GlobalStore = useGlobalStore()
-	GlobalStore.setToken('token') // 通过actions更改state
-	GlobalStore.setUserId('userid') // 通过actions更改state
-	// 我们也可以批量更改state $fetch api
-	GlobalStore.$patch((state) => {
-		state.token = 'token'
-		state.userid = 'userid'
-	})
-	GlobalStore.setUserInfo()
+  import { useGlobalStore } from '@/store'
+  const GlobalStore = useGlobalStore()
+  GlobalStore.setToken('token') // 通过actions更改state
+  GlobalStore.setUserId('userid') // 通过actions更改state
+  // 我们也可以批量更改state $fetch api
+  GlobalStore.$patch((state) => {
+    state.token = 'token'
+    state.userid = 'userid'
+  })
+  GlobalStore.setUserInfo()
 </script>
 ```
 
@@ -1159,9 +1159,9 @@ app.use(router).use(pinia).mount('#app') // 将app挂载到app节点上
 import { useStore } from '~/stores/myStore'
 
 export default {
-	asyncData({ $pinia }) {
-		const store = useStore($pinia)
-	},
+  asyncData({ $pinia }) {
+    const store = useStore($pinia)
+  },
 }
 ```
 
@@ -1221,11 +1221,11 @@ export default {
 
 ```js
 module.exports = {
-	resolve: {
-		alias: {
-			'@': path.resolve(__dirname, '../src'),
-		},
-	},
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, '../src'),
+    },
+  },
 }
 ```
 
@@ -1233,11 +1233,11 @@ module.exports = {
 
 ```js
 module.exports = {
-	resolve: {
-		alias: {
-			vue: 'vue/dist/vue.runtime.esm-browser.js',
-		},
-	},
+  resolve: {
+    alias: {
+      vue: 'vue/dist/vue.runtime.esm-browser.js',
+    },
+  },
 }
 ```
 
@@ -1271,12 +1271,12 @@ eslint-plugin-vue
 
 ```json
 {
-	"editor.codeActionsOnSave": {
-		"source.fixAll.eslint": true
-	},
-	"eslint.alwaysShowStatus": true,
-	"eslint.validate": ["javascript", "typescript", "vue", "html"],
-	"eslint.format.enable": true
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "eslint.alwaysShowStatus": true,
+  "eslint.validate": ["javascript", "typescript", "vue", "html"],
+  "eslint.format.enable": true
 }
 ```
 
@@ -1298,15 +1298,134 @@ npm i -D prettier
 
 ```json
 {
-	"editor.codeActionsOnSave": {
-		"source.fixAll.eslint": true
-	},
-	"eslint.alwaysShowStatus": true,
-	"eslint.validate": ["javascript", "typescript", "vue", "html"],
-	"eslint.format.enable": true,
-	"editor.defaultFormatter": "esbenp.prettier-vscode",
-	"editor.formatOnSave": true
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "eslint.alwaysShowStatus": true,
+  "eslint.validate": ["javascript", "typescript", "vue", "html"],
+  "eslint.format.enable": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true
 }
 ```
 
 也可以在 vscode 中全局配置，这里表示当前工作区配置，优先级高于全局配置
+
+> 配置了 Eslint 和 Prettier 只有在我们打开某一个文件，并手动保存时，格式才会更新。我们想要一键更新所有我们想要更新的文件,我们编辑/package.json，配置脚本
+
+```json
+"scripts": {
+    "dev": "webpack-dev-server --config build/webpack.dev.js --open",
+    "build": "npm run build:pro",
+    "build:pro": "webpack --config build/webpack.prod.js --mode production",
+    "format:check": "prettier --check .", // .表示根目录
+    "format:write": "prettier --write .",
+    "lint:check": "eslint .",
+    "lint:fix": "eslint --fix ."
+  },
+```
+
+#### 2.9.3 stylelint 规范 css 格式
+
+（1）安装 stylelint 相关插件
+
+```bash
+npm i -D stylelint stylelint-config-standard stylelint-order stylelint-config-prettier
+```
+
+|           依赖            |                   作用描述                   |
+| :-----------------------: | :------------------------------------------: |
+|         stylelint         |               stylelint 核心库               |
+| stylelint-config-standard |                标准可共享配置                |
+|      stylelint-order      |             css 属性排序规则插件             |
+| stylelint-config-prettier | 关闭所有不必要的或可能与 Prettier 冲突的规则 |
+
+（2）安装 vscode stylelint 插件
+（3）配置 stylelint /.stylelintrc.js /.stylelintignore
+
+```js
+module.exports = {
+  extends: ['stylelint-config-standard', 'stylelint-config-prettier'],
+  plugins: ['stylelint-order'],
+  /* null  => 关闭该规则 */
+  rules: {
+    'order/properties-order': ['position', 'top', 'width', 'height', 'z-index', 'display'],
+  },
+}
+```
+
+（4）.vscode/settings.json
+
+```json
+{
+  // ...省略配置
+  "editor.codeActionsOnSave": {
+    "source.fixAll": true, // 开启保存自动修复
+    "source.fixAll.stylelint": true // 开启保存stylelint自动修复
+  },
+  "stylelint.validate": ["css", "less", "postcss", "scss", "vue", "sass"]
+}
+```
+
+（5）配置完成，我们想试一下 stylelint 效果，我们发现出现了 Unknown word (CssSyntaxError)Stylelint(CssSyntaxError)错误  
+据网友说这个问题主要是因为 stylelint 升级到 14 大版本造成的。  
+解决方案  
+安装 stylelint 一些新的相关的依赖
+
+```bash
+npm i -D
+stylelint-config-recommended-vue
+stylelint-config-standard-scss
+postcss-html
+```
+
+修改/.stylelintrc.js
+
+```js
+module.exports = {
+  extends: [
+    'stylelint-config-standard',
+    'stylelint-config-standard-scss',
+    'stylelint-config-recommended-vue',
+    'stylelint-config-recommended-vue/scss',
+    'stylelint-config-prettier',
+  ],
+  // ...
+}
+```
+
+|               依赖               |                            作用描述                             |
+| :------------------------------: | :-------------------------------------------------------------: |
+|  stylelint-config-standard-scss  |  扩展 stylelint-config-standard 共享配置，并为 SCSS 配置其规则  |
+| stylelint-config-recommended-vue | 扩展 stylelint-config-recommended 共享配置，并为 Vue 配置其规则 |
+|           postcss-html           |                                                                 |
+
+修改完成之后，就没有报这个错误了，stylelint 可以按照我们的配置生效了。
+
+> 注意修改后可能还是没有生效，需要重启一下 vscode
+
+#### 2.9.3 EditorConfig
+
+EditorConfig 是用于统一不同 IDE 编码风格配置的一种配置文件.
+容易阅读,并且方便版本控制系统管理
+（1）新增/.editorconfig
+
+```conf
+# top-most EditorConfig file
+root = true
+
+[*] # 表示所有文件适用
+charset = utf-8 # 设置文件字符集为 utf-8
+end_of_line = lf # 控制换行类型(lf | cr | crlf)
+insert_final_newline = true # 始终在文件末尾插入一个新行
+indent_style = space # 缩进风格（tab | space）
+indent_size = 2 # 缩进大小
+max_line_length = 100 # 最大行长度
+trim_trailing_whitespace = true # 关闭末尾空格修剪,设置为 true 删除所有换行符前的空白字符false 不删除
+
+[*.md] # 表示仅 md 文件适用以下规则
+max_line_length = off # 关闭最大行长度限制
+trim_trailing_whitespace = false # 关闭末尾空格修剪
+```
+
+到目前位置，我们团队规约统一代码规范的所有配置都已经做完了，但是其实我们并不能保证每个开发人员在提交代码时，都运行了脚本修复了代码格式问题。如果大家不按照规范来做，会导致我们在合并代码时出现各种各样大篇幅的格式问题，真的很令人头疼。我们可以利用 git commit 来约束团队成员，在代码提交前自动运行脚本，修复我们的代码格式问题，如果修复不成功，则不予许 commit

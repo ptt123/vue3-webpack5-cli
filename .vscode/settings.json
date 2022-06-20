@@ -1,10 +1,14 @@
 {
-	"editor.codeActionsOnSave": {
-		"source.fixAll.eslint": true
-	},
-	"eslint.alwaysShowStatus": true,
-	"eslint.validate": ["javascript", "typescript", "vue", "html"],
-	"eslint.format.enable": true,
-	"editor.defaultFormatter": "esbenp.prettier-vscode",
-	"editor.formatOnSave": true
+  "stylelint.enable": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": true, // 开启保存自动修复
+    "source.fixAll.stylelint": true, // 开启保存stylelint自动修复
+    "source.fixAll.eslint": true // 开启保存eslint自动修复
+  },
+  "eslint.alwaysShowStatus": true,
+  "eslint.validate": ["javascript", "typescript", "vue", "html"],
+  "eslint.format.enable": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "stylelint.validate": ["css", "less", "postcss", "scss", "vue", "sass"]
 }
