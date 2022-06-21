@@ -1435,7 +1435,7 @@ trim_trailing_whitespace = false # 关闭末尾空格修剪
 （1）安装 git 版本控制相关插件 husky、lint-staged、commitlint、commitizen
 
 ```bash
-npm i -D husky lint-staged @commitlint/cli @commitlint/config-conventional commitizen cz-git
+npm i -D husky lint-staged @commitlint/cli @commitlint/config-conventional commitizen
 ```
 
 |              依赖               |                                                        作用描述                                                         |
@@ -1446,7 +1446,6 @@ npm i -D husky lint-staged @commitlint/cli @commitlint/config-conventional commi
 |         @commitlint/cli         |                                            用来在命令行中提示用户提交信息的                                             |
 | @commitlint/config-conventional |                                                    Anglar 的提交规范                                                    |
 |           commitizen            |                           基于 Node.js 的 git commit 命令行工具，生成标准化的 commit message                            |
-|             cz-git              |                           一款工程性更强，轻量级，高度自定义，标准输出格式的 commitize 适配器                           |
 
 （2）husky（git Hooks 工具）  
 编辑/package.json，添加脚本
@@ -1508,6 +1507,16 @@ Since v13.0.0 lint-staged no longer supports Node.js 12. Please upgrade your Nod
 现在我们再运行 npm run lint:lint-staged lint-staged 能正常工作了
 
 （4）commitlint（commit 信息校验工具，不符合则报错）  
+Commit Message 的标准格式：Header，Body，Footer
+
+```text
+<type>[scope]: <subject>
+// 空一行
+<body>
+// 空一行
+<footer>
+```
+
 添加/.husky/commit-msg 文件
 
 ```text
@@ -1557,13 +1566,18 @@ module.exports = {
 }
 ```
 
-（5）commitizen（当您使用 Commitizen 提交时，系统会提示您在提交时填写所有必需的提交字段）  
+（5）commitizen（当您使用 Commitizen（git-cz） 提交时，系统会提示您在提交时填写所有必需的提交字段）  
 编辑/package.json
 
 ```json
+"scripts": {
+    "commit": "git-cz",
+  },
 "config": {
     "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
+      "path": "node_modules/cz-conventional-changelog"
     }
   }
 ```
+
+然后我们就可以使用 npm run commit 来提交代码，系统会一步步提示我们填写符合标准的 Commit Message
