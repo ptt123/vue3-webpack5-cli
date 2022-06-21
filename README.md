@@ -1243,7 +1243,7 @@ module.exports = {
 
 ### 2.9 统一代码规范
 
-统一代码规范包括代码校验、代码格式化、git 提交前校验、编辑器配置等。
+统一代码规范包括代码校验、代码格式、编辑器配置、git 提交前校验等。
 
 #### 2.9.1 Eslint 代码检查工具
 
@@ -1429,3 +1429,141 @@ trim_trailing_whitespace = false # 关闭末尾空格修剪
 ```
 
 到目前位置，我们团队规约统一代码规范的所有配置都已经做完了，但是其实我们并不能保证每个开发人员在提交代码时，都运行了脚本修复了代码格式问题。如果大家不按照规范来做，会导致我们在合并代码时出现各种各样大篇幅的格式问题，真的很令人头疼。我们可以利用 git commit 来约束团队成员，在代码提交前自动运行脚本，修复我们的代码格式问题，如果修复不成功，则不予许 commit
+
+#### 2.9.3 git 提交前校验
+
+（1）安装 git 版本控制相关插件 husky、lint-staged、commitlint、commitizen
+
+```bash
+npm i -D husky lint-staged @commitlint/cli @commitlint/config-conventional commitizen cz-git
+```
+
+|              依赖               |                                                        作用描述                                                         |
+| :-----------------------------: | :---------------------------------------------------------------------------------------------------------------------: |
+|              husky              | Git hooks 工具，操作 git 钩子的工具（在 git xx 之前执行某些命令），可以防止使用 Git hooks 的一些不好的 commit 或者 push |
+|           lint-staged           |                                       在提交之前进行 eslint 校验本地暂存区的文件                                        |
+|           commitlint            |                                   校验 git commit 信息是否符合规范，保证团队的一致性                                    |
+|         @commitlint/cli         |                                            用来在命令行中提示用户提交信息的                                             |
+| @commitlint/config-conventional |                                                    Anglar 的提交规范                                                    |
+|           commitizen            |                           基于 Node.js 的 git commit 命令行工具，生成标准化的 commit message                            |
+|             cz-git              |                           一款工程性更强，轻量级，高度自定义，标准输出格式的 commitize 适配器                           |
+
+（2）husky（git Hooks 工具）  
+编辑/package.json，添加脚本
+
+```json
+"scripts": {
+    "prepare": "husky install"
+}
+```
+
+npm run prepare 生成./husky 文件夹  
+（3）lint-staged（本地暂存区文件代码检查）  
+添加 Eslint Hook，添加/.husky/pre-commit 文件（通过钩子函数，判断提交的代码是否符合规范，并使用 prettier、eslint、stylelint 格式化代码）
+
+```bash
+npx husky add .husky/pre-commit
+```
+
+编辑/.husky/pre-commit 文件
+
+```$
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+npm run lint:lint-staged
+```
+
+编辑/package.json，添加脚本
+
+```json
+"scripts": {
+    "prepare": "husky install",
+    "lint:lint-staged": "lint-staged"
+}
+```
+
+添加/.lintstagedrc.json
+
+```json
+{
+  "*.{js,jsx,ts,tsx}": ["eslint --fix", "prettier --write"],
+  "{!(package)*.json,*.code-snippets,.!(browserslist)*rc}": ["prettier --write--parser json"],
+  "package.json": ["prettier --write"],
+  "*.vue": ["eslint --fix", "prettier --write", "stylelint --fix"],
+  "*.{scss,less,styl,html}": ["stylelint --fix", "prettier --write"],
+  "*.md": ["prettier --write"]
+}
+```
+
+> npm run lint:lint-staged 此时我们发现，脚本运行出错了（lint-staged/lib/index.js:112
+> 报错了），百度很久都没有解决这个问题 555，最后想到去 npm 官网上看，lint-staged 官网上说，
+
+```text
+Since v13.0.0 lint-staged no longer supports Node.js 12. Please upgrade your Node.js version to at least 14.13.1, or 16.0.0 onward.
+```
+
+我安装的 lint-staged v13.0.2,但是我的 node 版本是 v12.22.7，解决方案就是要么升级我们的 node 版本，要么降级我们的 lint-staged 版本，这里我采用的是降级 lint-staged 版本。
+
+现在我们再运行 npm run lint:lint-staged lint-staged 能正常工作了
+
+（4）commitlint（commit 信息校验工具，不符合则报错）  
+添加/.husky/commit-msg 文件
+
+```text
+npx husky add .husky/commit-msg
+```
+
+编辑/.husky/commit-msg 文件
+
+```text
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+npx --no-install commitlint --edit $1
+```
+
+添加/.commitlintrc.js
+
+```js
+module.exports = {
+  extends: ['@commitlint/config-conventional'],
+  rules: {
+    // @see: https://commitlint.js.org/#/reference-rules
+    'type-enum': [
+      2,
+      'always',
+      [
+        'feat',
+        'fix',
+        'docs',
+        'style',
+        'refactor',
+        'perf',
+        'test',
+        'build',
+        'ci',
+        'chore',
+        'revert',
+        'wip',
+        'workflow',
+        'types',
+        'release',
+      ],
+    ],
+    'subject-full-stop': [0, 'never'],
+    'subject-case': [0, 'never'],
+  },
+}
+```
+
+（5）commitizen（当您使用 Commitizen 提交时，系统会提示您在提交时填写所有必需的提交字段）  
+编辑/package.json
+
+```json
+"config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
+```
