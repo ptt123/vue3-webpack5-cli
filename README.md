@@ -1207,7 +1207,7 @@ export default {
 
 ```
 
-### 2.8 优化 webpack 配置
+### 2.8 webpack 配置优化
 
 到这里其实我们已经实现工程化了，但是为了我们更好的开发、构建体验和我们用户的体验，我们可以做一些优化。下面我们从两个方面来优化我们的 webpack 配置。
 
@@ -1240,6 +1240,45 @@ module.exports = {
   },
 }
 ```
+
+#### 2.8.2 优化生产环境打包配置
+
+（1）生产环境使用 terser-webpack-plugin 压缩 JavaScript
+
+```bash
+npm i -D terser-webpack-plugin
+```
+
+（2）修改/build/webpack.prod.js
+
+```js
+const TerserPlugin = require('terser-webpack-plugin')
+module.exports = {
+  // 关键代码
+  mode: 'production',
+  optimization: {
+    minimizer: [
+      new TerserPlugin({
+        terserOptions: {
+          format: {
+            comments: false, // terserOptions.format.comments 选项指定是否保留注释
+          },
+          compress: {
+            // 生产环境去除console
+            drop_console: true,
+            // 生产环境去除debugger
+            drop_debugger: true,
+          },
+        },
+        extractComments: false, // 是否将注释剥离到单独的文件中
+        parallel: true, // 使用多进程并发运行以提高构建速度
+      }),
+    ],
+  },
+}
+```
+
+> tips: 刚开始我配置的是 include: /\/src/ 即只压缩/src 下面的文件，但是这样配置导致所有的文件都压缩不了（相当于 TerserPlugin 失效），最终的解决方法是用 exclude 来排除不想压缩的文件。
 
 ### 2.9 统一代码规范
 

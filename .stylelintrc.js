@@ -10,6 +10,7 @@ module.exports = {
   /* null  => 关闭该规则 */
   rules: {
     'scss/at-import-partial-extension': null, // 解决不能引入scss文件
+    'scss/at-rule-no-unknown': null,
     // 位置->布局方式->Box Model->文本相关->视觉效果->其他顺序书写以提高代码的可读性
     'order/properties-order': [
       'content',
