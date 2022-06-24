@@ -22,5 +22,6 @@ const handleJump = (name: string = 'orderDetail') => {
   width: 100%;
   height: 1000px;
   background-color: #fff;
+  color: #aaa;
 }
 </style>
