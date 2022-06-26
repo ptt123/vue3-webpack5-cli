@@ -1280,6 +1280,51 @@ module.exports = {
 
 > tips: 刚开始我配置的是 include: /\/src/ 即只压缩/src 下面的文件，但是这样配置导致所有的文件都压缩不了（相当于 TerserPlugin 失效），最终的解决方法是用 exclude 来排除不想压缩的文件。
 
+
+（3）生产坏境打包优化bundle名称    
+> 我们先来了解几个关键词：hash、chunkhash、contenthash、module、chunk、bundle、filename、chunckFilename、webpackChunkName、optimization.chunkIds 参考[webpack 中那些最易混淆的 5 个知识点](https://juejin.cn/post/6844904007362674701)
+> + hash与整个项目的构建相关，更改项目中任何一个文件hash都会重新生成
+> + chunkhash与同一chunk内容相关，为chunk的hash,chunk发生改变才会重新生成hash
+> + contenthash与文件内容相关，用于构建css,即只是更改css只会重新生成css文件的hash而js文件的hash不会发生改变。仅更改js，css文件的hash也是不会更新的。但是在这个项目中，不管只更改css还是只更改js，hash都会改变，也是无解。
+> + module 我们写的源代码,一个个源文件就是module
+> + chunk webpack根据module文件引用关系生成的chunk文件，然后处理生成的chunk文件，最终生成直接在浏览器中运行的bundle文件
+> + bundle webpack打包最终输出的文件，根据chunk文件生成bundle文件，包含已经经过加载和编译过程的源文件的最终版本，它可以直接在浏览器中运行
+> + filename 指列在entry中，打包后输出的文件名称
+> + chunkFilename 指未列在entry中，打包后输出的文件名称（如一些懒加载代码，像路由懒加载import等）
+> + webpackChunkName 为懒加载的文件取别名
+> + optimization.chunkIds v5新增重大变更，可以在生产环境指定optimization.chunkIds: "named",功能与webpackChunkName类似，使得打包出来的bundle文件具有可读意义的名称，但官方还是推荐生产坏境默认的'deterministic' [optimization.chunkIds](https://webpack.docschina.org/configuration/optimization/#optimizationchunkids)
+
+修改/build/webpack.config.js
+```js
+module.exports = {
+  output: {
+    path: path.resolve(__dirname, '../dist'), // 打包出口
+    filename: 'js/[name].[chunkhash:8].js', // 根据列在entry中打包完的静态资源文件名 hash => chunkhash 这里可以了解一下hash和chunkhash的区别
+    chunkFilename: 'js/[name].[chunkhash:8].js', // 未列在entry中（如路由懒加载import）打包出来的文件名
+  },
+  plugins: [
+    new MiniCssExtractPlugin({
+      filename: 'css/[name].[contenthash:8].css', // 生成的bundle名 chunkhash => contenthash
+      chunkFilename: 'css/[name].[contenthash:8].css', // chunk名
+    }),
+  ]
+}
+```
+更改/src/router/modules/mall.ts
+```js
+const MallRouter: RouteRecordRaw[] = [
+  {
+    path: '/mall',
+    component: () => import(/* webpackChunkName: "mall" */ '@/views/mall.vue'),
+    meta: {
+      title: '商城',
+      needAuth: true,
+    },
+  },
+]
+```
+执行npm run build 可以看到我们mall.ts模块打包出来的bundle名称变成了具有可读意义的，我们自己定义的mall。
+
 ### 2.9 统一代码规范
 
 统一代码规范包括代码校验、代码格式、编辑器配置、git 提交前校验等。

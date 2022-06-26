@@ -4,7 +4,7 @@ import { RouteRecordRaw } from 'vue-router'
 const MallRouter: RouteRecordRaw[] = [
   {
     path: '/mall',
-    component: () => import('@/views/mall.vue'),
+    component: () => import(/* webpackChunkName: "mall" */ '@/views/mall.vue'),
     meta: {
       title: '商城',
       needAuth: true,

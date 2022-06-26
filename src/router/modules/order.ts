@@ -5,7 +5,7 @@ const OrderRouter: RouteRecordRaw[] = [
   {
     path: '/orderList',
     name: 'orderList',
-    component: () => import('@/views/orderList.vue'),
+    component: () => import(/* webpackChunkName: "orderList" */ '@/views/orderList.vue'),
     meta: {
       title: '订单列表',
     },
@@ -13,7 +13,7 @@ const OrderRouter: RouteRecordRaw[] = [
   {
     path: '/orderDetail',
     name: 'orderDetail',
-    component: () => import('@/views/orderDetail.vue'),
+    component: () => import(/* webpackChunkName: "orderDetail" */ '@/views/orderDetail.vue'),
     meta: {
       title: '订单详情',
     },

@@ -4,7 +4,7 @@ import { RouteRecordRaw } from 'vue-router'
 const HomeRouter: RouteRecordRaw[] = [
   {
     path: '/home',
-    component: () => import(/* webpackChunkName: "home" */ '@/views/index.vue'),
+    component: () => import('@/views/index.vue'),
     meta: {
       title: '首页',
     },
