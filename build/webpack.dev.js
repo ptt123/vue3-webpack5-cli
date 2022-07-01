@@ -4,7 +4,7 @@ const { merge } = require('webpack-merge')
 
 module.exports = merge(WebpackConfig, {
   mode: 'development',
-  devtool: 'source-map',
+  // devtool: 'eval-cheap-module-source-map',
   devServer: {
     port: 8889,
     static: '../dist',

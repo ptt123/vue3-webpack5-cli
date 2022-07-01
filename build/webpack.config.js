@@ -4,6 +4,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const { VueLoaderPlugin } = require('vue-loader/dist/index')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin') // 提取js中的css文件
+const { DefinePlugin } = require('webpack')
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
 
 module.exports = {
   entry: ['@babel/polyfill', path.resolve(__dirname, '../src/main.ts')], // 打包入口
@@ -25,6 +27,11 @@ module.exports = {
       filename: 'css/[name].[contenthash:8].css', // 生成的bundle名 chunkhash => contenthash
       chunkFilename: 'css/[name].[contenthash:8].css', // chunk名
     }),
+    new DefinePlugin({
+      __VUE_PROD_DEVTOOLS__: false, // 生产环境是否继续支持devtools插件
+      __VUE_OPTIONS_API__: false, // 是否支持 options api 的写法
+    }),
+    new BundleAnalyzerPlugin(),
   ],
   resolve: {
     alias: {

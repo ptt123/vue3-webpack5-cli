@@ -8,6 +8,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 module.exports = merge(WebpackConfig, {
   mode: 'production',
+  // devtool: 'nosources-source-map', // 这里我们生产环境就不生成source map了，会增加代码体积。而且启用还会影响构建和重新构建的速度。
   optimization: {
     minimizer: [
       new CssMinimizerPlugin(),

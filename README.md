@@ -1280,21 +1280,23 @@ module.exports = {
 
 > tips: 刚开始我配置的是 include: /\/src/ 即只压缩/src 下面的文件，但是这样配置导致所有的文件都压缩不了（相当于 TerserPlugin 失效），最终的解决方法是用 exclude 来排除不想压缩的文件。
 
+（3）生产坏境打包优化 bundle 名称
 
-（3）生产坏境打包优化bundle名称    
 > 我们先来了解几个关键词：hash、chunkhash、contenthash、module、chunk、bundle、filename、chunckFilename、webpackChunkName、optimization.chunkIds 参考[webpack 中那些最易混淆的 5 个知识点](https://juejin.cn/post/6844904007362674701)
-> + hash与整个项目的构建相关，更改项目中任何一个文件hash都会重新生成
-> + chunkhash与同一chunk内容相关，为chunk的hash,chunk发生改变才会重新生成hash
-> + contenthash与文件内容相关，用于构建css,即只是更改css只会重新生成css文件的hash而js文件的hash不会发生改变。仅更改js，css文件的hash也是不会更新的。但是在这个项目中，不管只更改css还是只更改js，hash都会改变，也是无解。
-> + module 我们写的源代码,一个个源文件就是module
-> + chunk webpack根据module文件引用关系生成的chunk文件，然后处理生成的chunk文件，最终生成直接在浏览器中运行的bundle文件
-> + bundle webpack打包最终输出的文件，根据chunk文件生成bundle文件，包含已经经过加载和编译过程的源文件的最终版本，它可以直接在浏览器中运行
-> + filename 指列在entry中，打包后输出的文件名称
-> + chunkFilename 指未列在entry中，打包后输出的文件名称（如一些懒加载代码，像路由懒加载import等）
-> + webpackChunkName 为懒加载的文件取别名
-> + optimization.chunkIds v5新增重大变更，可以在生产环境指定optimization.chunkIds: "named",功能与webpackChunkName类似，使得打包出来的bundle文件具有可读意义的名称，但官方还是推荐生产坏境默认的'deterministic' [optimization.chunkIds](https://webpack.docschina.org/configuration/optimization/#optimizationchunkids)
+>
+> - hash 与整个项目的构建相关，更改项目中任何一个文件 hash 都会重新生成
+> - chunkhash 与同一 chunk 内容相关，为 chunk 的 hash,chunk 发生改变才会重新生成 hash
+> - contenthash 与文件内容相关，用于构建 css,即只是更改 css 只会重新生成 css 文件的 hash 而 js 文件的 hash 不会发生改变。仅更改 js，css 文件的 hash 也是不会更新的。但是在这个项目中，不管只更改 css 还是只更改 js，hash 都会改变，也是无解。
+> - module 我们写的源代码,一个个源文件就是 module
+> - chunk webpack 根据 module 文件引用关系生成的 chunk 文件，然后处理生成的 chunk 文件，最终生成直接在浏览器中运行的 bundle 文件
+> - bundle webpack 打包最终输出的文件，根据 chunk 文件生成 bundle 文件，包含已经经过加载和编译过程的源文件的最终版本，它可以直接在浏览器中运行
+> - filename 指列在 entry 中，打包后输出的文件名称
+> - chunkFilename 指未列在 entry 中，打包后输出的文件名称（如一些懒加载代码，像路由懒加载 import 等）
+> - webpackChunkName 为懒加载的文件取别名
+> - optimization.chunkIds v5 新增重大变更，可以在生产环境指定 optimization.chunkIds: "named",功能与 webpackChunkName 类似，使得打包出来的 bundle 文件具有可读意义的名称，但官方还是推荐生产坏境默认的'deterministic' [optimization.chunkIds](https://webpack.docschina.org/configuration/optimization/#optimizationchunkids)
 
 修改/build/webpack.config.js
+
 ```js
 module.exports = {
   output: {
@@ -1307,10 +1309,12 @@ module.exports = {
       filename: 'css/[name].[contenthash:8].css', // 生成的bundle名 chunkhash => contenthash
       chunkFilename: 'css/[name].[contenthash:8].css', // chunk名
     }),
-  ]
+  ],
 }
 ```
+
 更改/src/router/modules/mall.ts
+
 ```js
 const MallRouter: RouteRecordRaw[] = [
   {
@@ -1323,7 +1327,62 @@ const MallRouter: RouteRecordRaw[] = [
   },
 ]
 ```
-执行npm run build 可以看到我们mall.ts模块打包出来的bundle名称变成了具有可读意义的，我们自己定义的mall。
+
+执行 npm run build 可以看到我们 mall.ts 模块打包出来的 bundle 名称变成了具有可读意义的，我们自己定义的 mall。
+
+（4）devtool  
+我们在开发环境或生产环境中，module 经过 webpack 处理后，代码已经不是我们的源代码了，这样就会出现一个问题，一旦代码出现问题，我们便很难定位问题出现在源代码中的位置，这个时候我们可以借助 source map 帮助我们从 webpack 转换后的代码映射到源代码。感兴趣的可以查看资料[webpack Devtool](https://webpack.docschina.org/configuration/devtool/#devtool)官方有推荐生产坏境和开发环境使用 source map 风格。但是注意选择一种 source map 风格来增强调试过程。不同的值会明显影响到构建(build)和重新构建(rebuild)的速度。
+
+> 其实到这个时候，打包出来的 index.html 是无法运行的，报错**VUE_PROD_DEVTOOLS** is not defined
+
+```text
+main.a90864ff.js:1 Uncaught ReferenceError: __VUE_PROD_DEVTOOLS__ is not defined
+```
+
+我们先解决这个问题，参考[webpack5 + vue3 从零配置项目](https://juejin.cn/post/7056398225095262245#heading-12)
+修改/build/webpack.config.js
+
+```js
+const { DefinePlugin } = require('webpack')
+module.exports = {
+  plugins: [
+    new DefinePlugin({
+      __VUE_PROD_DEVTOOLS__: false, // 生产环境是否继续支持devtools插件
+      __VUE_OPTIONS_API__: false, // 是否支持 options api 的写法
+    }),
+  ],
+}
+```
+
+修改构建配置文件后，重新打包 npm run build，index.html 就可以正常运行了
+
+（5）bundle 分析： webpack-bundle-analyzer  
+我们生产环境直接运行的是 bundle，bundle 的大小对网页加载速度很重要，webpack-bundle-analyzer 就是一个可视化分析 bundle 大小的插件，分析结果有利于我们优化 bundle 大小
+
+```bash
+npm i -D webpack-bundle-analyzer
+```
+
+修改/build/webpack.config.js
+
+```js
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
+module.exports = {
+  plugins: [new BundleAnalyzerPlugin()],
+}
+```
+
+修改/package.json
+
+```json
+{
+  "scripts": {
+    "analyzer": "npm run build:pro --report"
+  }
+}
+```
+
+运行 npm run analyzer
 
 ### 2.9 统一代码规范
 
