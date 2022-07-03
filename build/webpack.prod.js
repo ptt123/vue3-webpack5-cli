@@ -28,6 +28,9 @@ module.exports = merge(WebpackConfig, {
         parallel: true, // 使用多进程并发运行以提高构建速度
       }),
     ],
+    splitChunks: {
+      chunks: 'all',
+    },
   },
   plugins: [
     // 处理静态文件夹static，复制到打包的static文件夹

@@ -31,7 +31,9 @@ module.exports = {
       __VUE_PROD_DEVTOOLS__: false, // 生产环境是否继续支持devtools插件
       __VUE_OPTIONS_API__: false, // 是否支持 options api 的写法
     }),
-    new BundleAnalyzerPlugin(),
+    new BundleAnalyzerPlugin({
+      analyzerPort: 9999,
+    }),
   ],
   resolve: {
     alias: {

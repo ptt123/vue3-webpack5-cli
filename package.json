@@ -7,14 +7,14 @@
     "dev": "webpack-dev-server --config build/webpack.dev.js --open",
     "build": "npm run build:pro",
     "build:pro": "webpack --config build/webpack.prod.js --mode production",
+    "build:report": "npm run build:pro --report",
     "format:check": "prettier --check .",
     "format:write": "prettier --write .",
     "lint:check": "eslint .",
     "lint:fix": "eslint --fix .",
     "prepare": "husky install",
     "lint:lint-staged": "lint-staged",
-    "commit": "git pull && git add -A && git-cz && git push",
-    "analyzer": "npm run build:pro --report"
+    "commit": "git pull && git add -A && git-cz && git push"
   },
   "author": "",
   "license": "ISC",

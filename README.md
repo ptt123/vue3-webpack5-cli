@@ -1377,12 +1377,28 @@ module.exports = {
 ```json
 {
   "scripts": {
-    "analyzer": "npm run build:pro --report"
+    "build:report": "npm run build:pro --report"
   }
 }
 ```
 
-运行 npm run analyzer
+运行 npm run build:report
+（6）代码分离  
+根据 bundle 分析结果，我们可以看到此时打包的入口文件比较庞大。里面包含了 node_modules 中的内容和我们自己写的源码 src.
+我们可以做代码分离，将大的文件拆分成多个 bundle，然后进行并行加载或者按需加载。代码分离可以获得更小的 bundle，以及控制资源加载优先级，如果使用合理，会极大减少加载时间。
+
+常用的代码分离方法有三种：
+
+- 入口起点：使用 entry 配置手动地分离代码。
+- 防止重复：使用 Entry dependencies 或者 SplitChunksPlugin 去重和分离 chunk.
+- 动态导入：import()语法来实现动态导入或者 require.ensure,可以用来实现路由懒加载。
+
+这里我们重点讲一下防止重复，
+
+- 入口依赖
+  如果我们是哟哦那个 entry 配置手动分离代码，那么我们就需要配置 dependOn option 选项，在多个 chunk 之间共享模块。
+- SplitChunksPlugin
+  SplitChunksPlugin 插件可以将公共的依赖模块(如 node_modules 中的)提取到已有的入口 chunk 中，或者提取到一个新生成的 chunk 中。
 
 ### 2.9 统一代码规范
 
