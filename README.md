@@ -1400,6 +1400,24 @@ module.exports = {
 - SplitChunksPlugin
   SplitChunksPlugin 插件可以将公共的依赖模块(如 node_modules 中的)提取到已有的入口 chunk 中，或者提取到一个新生成的 chunk 中。
 
+（6）dconventional-changelog-cli 生成提交日志 CHANGELOG.m
+
+```bash
+npm i -D conventional-changelog-cli
+```
+
+修改/package.json，添加指令
+
+- conventional-changelog -p angular -i CHANGELOG.md -s 生成日志新的日志，新增的日志基于自上一个 commit 的"Feature", "Fix", "Performance Improvement" 或 "Breaking Changes".
+- conventional-changelog -p angular -i CHANGELOG.md -s -r 0 生成所有日志
+
+```json
+"scripts": {
+  "log": "conventional-changelog -p angular -i CHANGELOG.md -s",
+  "log:all": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0"
+}
+```
+
 ### 2.9 统一代码规范
 
 统一代码规范包括代码校验、代码格式、编辑器配置、git 提交前校验等。
