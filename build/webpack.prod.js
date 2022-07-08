@@ -6,8 +6,9 @@ const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const CompressionPlugin = require('compression-webpack-plugin') // 压缩资源with Content-Encoding gzip/deflate/br
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
 
-module.exports = merge(WebpackConfig, {
+const config = merge(WebpackConfig, {
   mode: 'production',
   // devtool: 'nosources-source-map', // 这里我们生产环境就不生成source map了，会增加代码体积。而且启用还会影响构建和重新构建的速度。
   optimization: {
@@ -51,3 +52,12 @@ module.exports = merge(WebpackConfig, {
     }),
   ],
 })
+
+if (process.env.IS_REPORT === 'true') {
+  config.plugins.push(
+    new BundleAnalyzerPlugin({
+      analyzerPort: 9999,
+    }),
+  )
+}
+module.exports = config

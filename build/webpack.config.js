@@ -1,19 +1,18 @@
 // webpack.config.js
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const { VueLoaderPlugin } = require('vue-loader/dist/index')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin') // 提取js中的css文件
 const { DefinePlugin } = require('webpack')
-const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
 const WindiCSSWebpackPlugin = require('windicss-webpack-plugin')
 
 module.exports = {
   entry: ['@babel/polyfill', path.resolve(__dirname, '../src/main.ts')], // 打包入口
   output: {
     path: path.resolve(__dirname, '../dist'), // 打包出口
-    filename: 'js/[name].[chunkhash:8].js', // 根据列在entry中打包完的静态资源文件名 hash => chunkhash 这里可以了解一下hash和chunkhash的区别
-    chunkFilename: 'js/[name].[chunkhash:8].js', // 未列在entry中（如路由懒加载import）打包出来的文件名
+    filename: 'js/[name].[contenthash:8].bundle.js', // 根据列在entry中打包完的静态资源文件名 hash => chunkhash 这里可以了解一下hash和chunkhash的区别
+    chunkFilename: 'js/[name].[contenthash:8].bundle.js', // 未列在entry中（如路由懒加载import）打包出来的文件名
+    clean: true,
   },
   plugins: [
     new HtmlWebpackPlugin({
@@ -22,7 +21,6 @@ module.exports = {
       inject: 'body', //打包出来的那个js文件，放置在生成的body标签内
       title: '从0到1手搭Vue开发环境', // index.html 模板内，通过 <%= htmlWebpackPlugin.options.title %> 拿到的变量
     }),
-    new CleanWebpackPlugin(),
     new VueLoaderPlugin(),
     new MiniCssExtractPlugin({
       filename: 'css/[name].[contenthash:8].css', // 生成的bundle名 chunkhash => contenthash
@@ -31,9 +29,6 @@ module.exports = {
     new DefinePlugin({
       __VUE_PROD_DEVTOOLS__: false, // 生产环境是否继续支持devtools插件
       __VUE_OPTIONS_API__: false, // 是否支持 options api 的写法
-    }),
-    new BundleAnalyzerPlugin({
-      analyzerPort: 9999,
     }),
     new WindiCSSWebpackPlugin(),
   ],
