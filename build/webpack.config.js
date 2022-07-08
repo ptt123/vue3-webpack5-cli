@@ -6,6 +6,7 @@ const { VueLoaderPlugin } = require('vue-loader/dist/index')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin') // 提取js中的css文件
 const { DefinePlugin } = require('webpack')
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
+const WindiCSSWebpackPlugin = require('windicss-webpack-plugin')
 
 module.exports = {
   entry: ['@babel/polyfill', path.resolve(__dirname, '../src/main.ts')], // 打包入口
@@ -34,6 +35,7 @@ module.exports = {
     new BundleAnalyzerPlugin({
       analyzerPort: 9999,
     }),
+    new WindiCSSWebpackPlugin(),
   ],
   resolve: {
     alias: {

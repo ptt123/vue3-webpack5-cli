@@ -1418,6 +1418,69 @@ npm i -D conventional-changelog-cli
 }
 ```
 
+（7）集成 Windi CSS
+
+可以把 Windi CSS 看作是按需供应的 Tailwind 替代方案，它为你提供了更快的加载体验，完美兼容 Tailwind v2.0，并且拥有很多额外的酷炫功能。  
+Tailwind CSS 是一个功能类优先的 CSS 框架，它集成了诸如 flex, pt-4, text-center 和 rotate-90 这样的的类，它们能直接在脚本标记语言中组合起来，构建出任何设计。
+
+```bash
+npm i -D windicss-webpack-plugin
+```
+
+修改/build/webpack.config.js
+
+```js
+const WindiCSSWebpackPlugin = require('windicss-webpack-plugin')
+module.exports = {
+  // ...
+  plugins: [new WindiCSSWebpackPlugin()],
+}
+```
+
+安装 vscode 插件 WindiCSS IntelliSense
+
+修改/.vscode/settings.json
+
+```json
+{
+  "editor.quickSuggestions": {
+    "strings": true
+  },
+  "css.validate": false
+}
+```
+
+入口文件导入 windi.css，修改/src/main.ts
+
+```js
+import 'windi.css'
+```
+
+Windi 配置/windi.config.ts
+
+```js
+const path = require('path')
+import { defineConfig } from 'windicss/helpers'
+
+export default defineConfig({
+  extract: {
+    // A common use case is scanning files from the root directory
+    include: [path.resolve(__dirname, 'src/**/*.{vue,html,jsx,tsx}')],
+    // if you are excluding files, make sure you always include node_modules and .git
+    exclude: [
+      path.resolve(__dirname, 'node_modules'),
+      path.resolve(__dirname, '.git'),
+      path.resolve(__dirname, 'dist'),
+    ],
+  },
+})
+```
+
+配置完成，我们 npm run dev
+
+此时我们发现，devServer 跑不起来了，报错 webpack-cli /node_modules/@windicss/plugin-utils/dist/index.js 中 ?? unexpected ?,
+即 webpack-cli 不能识别??空值合并运算符，百度了好久都没有解决这个问题（按理说，webpack.config.js 中配置了 module.rules 中用 babel-loader 处理 js/ts，exclude 排除了 node_modules 中的内容，这里为什么在启动 devServer 时，还会去处理 node_modules 中的内容呢？这里不理解！TODO）,查看别人的项目，发现 npm i 之后/node_modules/@windicss/plugin-utils/dist/index.js 中并没有??，就可以肯定的是我的@windicss/plugin-utils 版本是不对的，@windicss/plugin-utils 属于 windicss-webpack-plugin 插件的子依赖，那我再看是否我的 windicss-webpack-plugin 版本不对，但是别人的项目也是windicss-webpack-plugin@1.7.3，但是在他的项目中，npm i 之后他的@windicss/plugin-utils 版本号是 1.8.4。但是我安装windicss-webpack-plugin@1.7.3，子依赖@windicss/plugin-utils 却是 1.8.6 版本，无解了。最后是 package-lock.json 中锁定@windicss/plugin-utils 版本号为 1.8.4，删掉 node_modules，重新 npm i，解决掉了这个问题。或许 windicss-webpack-plugin 降级也能解决这个问题，没有尝试。
+
 ### 2.9 统一代码规范
 
 统一代码规范包括代码校验、代码格式、编辑器配置、git 提交前校验等。
