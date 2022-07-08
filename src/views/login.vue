@@ -11,7 +11,7 @@ const login = () => {
   GlobalStore.setUserId('userid')
   GlobalStore.setUserInfo()
 }
-debugger
+
 console.log('我是登录页面')
 </script>
 <style lang="less" scoped></style>

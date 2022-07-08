@@ -30,8 +30,29 @@ const config = merge(WebpackConfig, {
         parallel: true, // 使用多进程并发运行以提高构建速度
       }),
     ],
+    // 公共代码抽离
     splitChunks: {
       chunks: 'all',
+      cacheGroups: {
+        libs: {
+          name: 'chunk-libs',
+          test: /[\\/]node_modules[\\/]/,
+          priority: 10,
+          chunks: 'initial', // only package third parties that are initially dependent
+        },
+        antdv: {
+          name: 'chunk-ant-design-vue', // split ant-design-vue into a single package
+          priority: 20, // the weight needs to be larger than libs and app or it will be packaged into libs or app
+          test: /[\\/]node_modules[\\/]_?ant-design-vue(.*)/, // in order to adapt to cnpm
+        },
+        commons: {
+          name: 'chunk-commons',
+          test: path.join(__dirname, 'src/components'), // can customize your rules
+          minChunks: 3, // 被引用3次就提取出来
+          priority: 5,
+          reuseExistingChunk: true, // 表示是否使用已有的 chunk，如果为 true 则表示如果当前的 chunk 包含的模块已经被抽取出去了，那么将不会重新生成新的。
+        },
+      },
     },
   },
   plugins: [

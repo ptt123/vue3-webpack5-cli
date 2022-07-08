@@ -1,5 +1,6 @@
 <template>
   <div class="app-wrapper">
+    <a-button type="primary">Primary Button</a-button>
     <router-view v-slot="{ Component }">
       <transition>
         <keep-alive>
