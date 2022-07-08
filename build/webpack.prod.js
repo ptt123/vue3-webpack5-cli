@@ -5,6 +5,7 @@ const { merge } = require('webpack-merge')
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
+const CompressionPlugin = require('compression-webpack-plugin') // 压缩资源with Content-Encoding gzip/deflate/br
 
 module.exports = merge(WebpackConfig, {
   mode: 'production',
@@ -41,6 +42,12 @@ module.exports = merge(WebpackConfig, {
           to: path.resolve(__dirname, '../dist/static'),
         },
       ],
+    }),
+    new CompressionPlugin({
+      test: /\.(js|css|html)?$/i, // 压缩文件格式
+      algorithm: 'gzip', // 压缩算法：gzip
+      // 只有大小大于该值的资源会被处理。单位是 bytes。默认值是 0。
+      threshold: 10240, // 大于10K的才会被压缩
     }),
   ],
 })

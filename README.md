@@ -1481,6 +1481,31 @@ export default defineConfig({
 此时我们发现，devServer 跑不起来了，报错 webpack-cli /node_modules/@windicss/plugin-utils/dist/index.js 中 ?? unexpected ?,
 即 webpack-cli 不能识别??空值合并运算符，百度了好久都没有解决这个问题（按理说，webpack.config.js 中配置了 module.rules 中用 babel-loader 处理 js/ts，exclude 排除了 node_modules 中的内容，这里为什么在启动 devServer 时，还会去处理 node_modules 中的内容呢？这里不理解！TODO）,查看别人的项目，发现 npm i 之后/node_modules/@windicss/plugin-utils/dist/index.js 中并没有??，就可以肯定的是我的@windicss/plugin-utils 版本是不对的，@windicss/plugin-utils 属于 windicss-webpack-plugin 插件的子依赖，那我再看是否我的 windicss-webpack-plugin 版本不对，但是别人的项目也是windicss-webpack-plugin@1.7.3，但是在他的项目中，npm i 之后他的@windicss/plugin-utils 版本号是 1.8.4。但是我安装windicss-webpack-plugin@1.7.3，子依赖@windicss/plugin-utils 却是 1.8.6 版本，无解了。最后是 package-lock.json 中锁定@windicss/plugin-utils 版本号为 1.8.4，删掉 node_modules，重新 npm i，解决掉了这个问题。或许 windicss-webpack-plugin 降级也能解决这个问题，没有尝试。
 
+（8）CompressionPlugin 生产环境开启 gzip 压缩
+
+```
+npm i -D compression-webpack-plugin
+```
+
+修改/build/webpack.prod.js
+
+```
+const CompressionPlugin = require('compression-webpack-plugin')
+module.exports = {
+  plugins: [
+    new CompressionPlugin({
+      test: /\.(js|css|html)?$/i, // 压缩文件格式
+      algorithm: 'gzip', // 压缩算法：gzip
+      // 只有大小大于该值的资源会被处理。单位是 bytes。默认值是 0。
+      threshold: 10240, // 大于10K的才会被压缩
+    }),
+  ]
+}
+```
+
+客户端要使用 gzip 压缩格式，请求头(Request Headers)Accept-Encoding:gzip, deflate, br;
+需要服务器(ngnix)的配合,使得响应头(Response Headers)Content-Encoding:gzip
+
 ### 2.9 统一代码规范
 
 统一代码规范包括代码校验、代码格式、编辑器配置、git 提交前校验等。
