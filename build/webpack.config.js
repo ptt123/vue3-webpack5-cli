@@ -7,7 +7,7 @@ const { DefinePlugin } = require('webpack')
 const WindiCSSWebpackPlugin = require('windicss-webpack-plugin')
 
 module.exports = {
-  entry: ['@babel/polyfill', path.resolve(__dirname, '../src/main.ts')], // 打包入口
+  entry: path.resolve(__dirname, '../src/main.ts'), // 打包入口
   output: {
     path: path.resolve(__dirname, '../dist'), // 打包出口
     filename: 'js/[name].[contenthash:8].bundle.js', // 根据列在entry中打包完的静态资源文件名 hash => chunkhash 这里可以了解一下hash和chunkhash的区别

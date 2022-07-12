@@ -1506,6 +1506,93 @@ module.exports = {
 客户端要使用 gzip 压缩格式，请求头(Request Headers)Accept-Encoding:gzip, deflate, br;
 需要服务器(ngnix)的配合,使得响应头(Response Headers)Content-Encoding:gzip
 
+（9）移除@babel/polyfill,使用@babel/plugin-transform-runtime
+
+```bash
+npm i -D @babel/plugin-transform-runtime
+npm i -S @babel/runtime-corejs3
+```
+
+@babel/polyfill 会导致打包的代码巨大（引入了全部浏览器暂未支持的 polyfill 模块）。Babel 7.4 之后不再推荐使用@babel/polyfill,而是推荐@babel/preset-env。
+
+@babel/preset-env 通过 targets、useBuiltIns、corejs,Babel 将会根据我们的代码使用情况自动注入 polyfill，如此一来在打包的时候将会相对地减少打包体积
+
+实际上 preset-env 的 polyfill 会污染全局环境。plugin-transform-runtime 可以主要做了三件事：
+[babel-plugin-transform-runtime](https://babeljs.io/docs/en/babel-plugin-transform-runtime)
+
+- 当开发者使用异步或生成器的时候，自动引入@babel/runtime/regenerator，开发者不必在入口文件做额外引入
+- 提供沙盒环境，避免全局环境的污染
+- 移除 babel 内联的 helpers，统一使用@babel/runtime/helpers 代替，减小打包体积
+
+@babel/preset-env、@babel/plugin-transform-runtime 都可以使用 corejs，实现按需自动注入 polyfill，那么我们应该如何选择呢？
+
+项目开发中
+
+```js
+module.exports = {
+  presets: [
+    [
+      '@babel/preset-env',
+      {
+        // 处理polyfill
+        useBuiltIns: 'usage', // useBuiltIns默认为false，如果我们使用默认值或者entry值，又需要polyfill,则需要在入口文件引入import 'core-js/stable' import 'regenerator-runtime/runtime'
+        corejs: {
+          // 需要安装core-js
+          version: 3.23,
+          proposals: true,
+        },
+      },
+    ],
+    [
+      '@babel/preset-typescript',
+      {
+        allExtensions: true, // 支持所有文件扩展名，否则在vue文件中使用ts会报错
+      },
+    ],
+  ],
+  plugins: [
+    [
+      '@babel/plugin-transform-runtime', // 这里只使用其移除内联复用的辅助函数的特性，减小打包体积
+      {
+        corejs: false,
+      },
+    ],
+  ],
+}
+```
+
+类库开发中
+
+```js
+module.exports = {
+  presets: [
+    [
+      '@babel/preset-env', // 这里只使用其默认的语法转换功能
+    ],
+    [
+      '@babel/preset-typescript',
+      {
+        allExtensions: true, // 支持所有文件扩展名，否则在vue文件中使用ts会报错
+      },
+    ],
+  ],
+  plugins: [
+    [
+      '@babel/plugin-transform-runtime',
+      {
+        corejs: {
+          // 处理polyfill
+          version: 3,
+          proposals: true,
+        },
+        version: '7.18.6',
+        useESModules: true,
+      },
+    ],
+  ],
+}
+```
+
 ### 2.9 统一代码规范
 
 统一代码规范包括代码校验、代码格式、编辑器配置、git 提交前校验等。
