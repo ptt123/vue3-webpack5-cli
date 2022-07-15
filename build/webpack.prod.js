@@ -12,6 +12,8 @@ const config = merge(WebpackConfig, {
   mode: 'production',
   // devtool: 'nosources-source-map', // 这里我们生产环境就不生成source map了，会增加代码体积。而且启用还会影响构建和重新构建的速度。
   optimization: {
+    runtimeChunk: 'single', // 提取入口chunk中的boilerplate（boilerplate 指 webpack 运行时的引导代码），比如runtime，manifest
+    moduleIds: 'deterministic',
     minimizer: [
       new CssMinimizerPlugin(),
       new TerserPlugin({
@@ -34,8 +36,8 @@ const config = merge(WebpackConfig, {
     splitChunks: {
       chunks: 'all',
       cacheGroups: {
-        libs: {
-          name: 'chunk-libs',
+        vendor: {
+          name: 'vendors',
           test: /[\\/]node_modules[\\/]/,
           priority: 10,
           chunks: 'initial', // only package third parties that are initially dependent

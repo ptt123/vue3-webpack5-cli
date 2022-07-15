@@ -5,6 +5,7 @@ const { VueLoaderPlugin } = require('vue-loader/dist/index')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin') // 提取js中的css文件
 const { DefinePlugin } = require('webpack')
 const WindiCSSWebpackPlugin = require('windicss-webpack-plugin')
+const { WebpackManifestPlugin } = require('webpack-manifest-plugin')
 
 module.exports = {
   entry: path.resolve(__dirname, '../src/main.ts'), // 打包入口
@@ -31,6 +32,7 @@ module.exports = {
       __VUE_OPTIONS_API__: false, // 是否支持 options api 的写法
     }),
     new WindiCSSWebpackPlugin(),
+    new WebpackManifestPlugin(),
   ],
   resolve: {
     alias: {

@@ -1294,6 +1294,7 @@ module.exports = {
 > - chunkFilename 指未列在 entry 中，打包后输出的文件名称（如一些懒加载代码，像路由懒加载 import 等）
 > - webpackChunkName 为懒加载的文件取别名
 > - optimization.chunkIds v5 新增重大变更，可以在生产环境指定 optimization.chunkIds: "named",功能与 webpackChunkName 类似，使得打包出来的 bundle 文件具有可读意义的名称，但官方还是推荐生产坏境默认的'deterministic' [optimization.chunkIds](https://webpack.docschina.org/configuration/optimization/#optimizationchunkids)
+>   manifest webpack 通过 manifest，可以追踪所有模块到输出 bundle 之间的映射。通过 WebpackManifestPlugin 插件，可以将 manifest 数据提取为一个 json 文件以供使用。
 
 修改/build/webpack.config.js
 
@@ -1399,6 +1400,13 @@ module.exports = {
   如果我们是哟哦那个 entry 配置手动分离代码，那么我们就需要配置 dependOn option 选项，在多个 chunk 之间共享模块。
 - SplitChunksPlugin
   SplitChunksPlugin 插件可以将公共的依赖模块(如 node_modules 中的)提取到已有的入口 chunk 中，或者提取到一个新生成的 chunk 中。
+
+预获取/预加载模块(prefetch/preload module) webpackPrefetch/webpackPreload
+
+- prefetch(预获取)：将来某些导航下可能需要的资源。 prefetch chunk 会在父 chunk 加载结束后开始加载
+- preload(预加载)：当前导航下可能需要资源。 preload chunk 会在父 chunk 加载时，以并行方式开始加载
+
+合理使用 prefetch/preload，达到性能优化的目的。[不正确地使用 webpackPreload 会有损性能](https://webpack.docschina.org/guides/code-splitting/#prefetchingpreloading-modules)
 
 （6）dconventional-changelog-cli 生成提交日志 CHANGELOG.m
 
@@ -1592,6 +1600,17 @@ module.exports = {
   ],
 }
 ```
+
+（10）缓存  
+当我们首次访问一个网站，会获取网站相应的资源（html/css/js 等等），获取这些资源需要耗费一定的时间。当我们再次访问某些网站时，我们会发现加载比首次访问要快很多，这是因为浏览器使用了缓存的技术，首次访问的资源会被浏览器缓存起来，再次访问时，只要资源名不变，浏览器就会使用它的缓存版本，所以加载会变快。我们利用浏览器缓存这一技术，也可以让我们的网站的资源名在需要变更时才变更，不需要时则不变更 output filename 中的 contenthash 刚好做了这个事情（只有当内容发生变化时，contenthash 才会变更）。
+
+前面留了一个问题，contenthash 好像没起作用。官网上说是因为 webpack 在入口 chunk 中，包含了某些 boilerplate(引导模板)，特别是 runtime 和 manifest。（译注：boilerplate 指 webpack 运行时的引导代码）
+
+所以我们要做的就是提取 boilerplate 到单独的 bundle 中，可使用 optimization.runtimeChunk 选项将 runtime 代码拆分为一个单独的 chunk。将其设置为 single 来为所有 chunk 创建一个 runtime bundle。
+
+利用 SplitChunksPlugin 插件，将第三方库(library)）提取到单独的 vendor chunk 文件中。
+
+模块标识符(module identifier): optimization.moduleIds 设置为 'deterministic'
 
 ### 2.9 统一代码规范
 

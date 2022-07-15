@@ -11,7 +11,6 @@ module.exports = merge(WebpackConfig, {
     port: 8889,
     open: true,
     hot: true,
-    progress: true,
     client: {
       logging: 'error',
       overlay: {
