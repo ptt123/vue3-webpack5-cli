@@ -8,6 +8,7 @@
     "build": "npm run build:pro",
     "build:pro": "webpack --config build/webpack.prod.js --mode production --progress",
     "build:report": "cross-env IS_REPORT=true webpack --config build/webpack.prod.js --mode production --progress",
+    "build:report1": "webpack --config build/webpack.prod.js --mode production --progress --env goal=report",
     "format:check": "prettier --check .",
     "format:write": "prettier --write .",
     "lint:check": "eslint .",

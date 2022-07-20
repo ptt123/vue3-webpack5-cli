@@ -83,4 +83,13 @@ if (process.env.IS_REPORT === 'true') {
     }),
   )
 }
-module.exports = config
+module.exports = (env) => {
+  if (env.goal === 'report') {
+    config.plugins.push(
+      new BundleAnalyzerPlugin({
+        analyzerPort: 9999,
+      }),
+    )
+  }
+  return config
+}
