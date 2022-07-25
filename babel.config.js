@@ -3,6 +3,7 @@ module.exports = {
     [
       '@babel/preset-env',
       {
+        moduels: false, // 关闭模块导入导出语句的转译,使得对ESM进行tree shaking
         // 处理polyfill
         useBuiltIns: 'usage', // useBuiltIns默认为false，如果我们使用默认值或者entry值，又需要polyfill,则需要在入口文件引入import 'core-js/stable' import 'regenerator-runtime/runtime'
         corejs: {

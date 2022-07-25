@@ -1,6 +1,6 @@
 // 生产环境
 const path = require('path')
-const WebpackConfig = require('./webpack.config.js')
+const common = require('./webpack.common.js')
 const { merge } = require('webpack-merge')
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin') // minify(压缩) 和 mangle(混淆破坏) 代码
@@ -8,14 +8,18 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 const CompressionPlugin = require('compression-webpack-plugin') // 压缩资源with Content-Encoding gzip/deflate/br
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
 
-const config = merge(WebpackConfig, {
-  mode: 'production',
-  // devtool: 'nosources-source-map', // 这里我们生产环境就不生成source map了，会增加代码体积。而且启用还会影响构建和重新构建的速度。
+const config = merge(common, {
+  mode: 'production', // 生产环境默认启动Tree Shaking
+  // devtool: 'nosources-source-map', // 这里我们生产环境就不生成source map了，会增加bundle体积。而且启用还会影响构建和重新构建的速度。
   optimization: {
     runtimeChunk: 'single', // 提取入口chunk中的boilerplate（boilerplate 指 webpack 运行时的引导代码），比如runtime，manifest
     moduleIds: 'deterministic',
+    minimize: true, // Tree Shaking需要
+    // Tree Shaking需要
     minimizer: [
+      // 压缩CSS
       new CssMinimizerPlugin(),
+      // 压缩JS
       new TerserPlugin({
         terserOptions: {
           format: {

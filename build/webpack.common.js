@@ -56,6 +56,7 @@ module.exports = {
       {
         test: /\.css$/,
         use: [MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader'], // 从右向左解析原则
+        sideEffects: true,
       },
       // {
       //   test:/\.less$/,
@@ -71,6 +72,7 @@ module.exports = {
       {
         test: /\.less$/,
         use: [MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader', 'less-loader'],
+        sideEffects: true,
       },
       {
         test: /\.(png|jpe?g|gif)$/,

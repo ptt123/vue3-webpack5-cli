@@ -1,8 +1,8 @@
 // 开发环境
-const WebpackConfig = require('./webpack.config.js')
+const common = require('./webpack.common.js')
 const { merge } = require('webpack-merge')
 
-module.exports = merge(WebpackConfig, {
+module.exports = merge(common, {
   mode: 'development',
   // devtool: 'eval-cheap-module-source-map',
   devServer: {

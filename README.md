@@ -1612,6 +1612,14 @@ module.exports = {
 
 模块标识符(module identifier): optimization.moduleIds 设置为 'deterministic'
 
+（11） Tree Shaking  
+tree shaking 是一个术语，通常用于描述移除 JavaScript 上下文中的未引用代码(dead-code)。它依赖于 ESM 的静态结构特性（它要求所有的导入导出语句只能出现在模块顶层，且导入导出的模块名必须为字符串常量，与运行状态无关），例如 import 和 export。
+
+在 Webpack5 中，Tree Shaking 在生产环境下默认启动,通过 Terser 插件(DCE dead-code-Elimination 功能)来移除 bundle 中标记为 unused 的语句
+
+关于 tree shaking,请参考[Tree-Shaking 实现原理](https://juejin.cn/post/7002410645316436004)
+[你可能不知道的 tree shaking](https://juejin.cn/post/6933134914489417735)
+
 ### 2.9 统一代码规范
 
 统一代码规范包括代码校验、代码格式、编辑器配置、git 提交前校验等。
