@@ -17,6 +17,9 @@ import { reactive, computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 // import { useOrderStore } from "@/store/modules/order"
 // const orderStore = useOrderStore()
+import homeIcon from '@/assets/images/logo.png'
+import mallIcon from '@/assets/images/address.png'
+import userIcon from '@/assets/images/logo.png'
 
 const rotuer = useRouter()
 const route = useRoute()
@@ -24,17 +27,17 @@ const route = useRoute()
 // eslint-disable-next-line no-undef
 const tabbar: Array<Tabbar> = reactive([
   {
-    iconPath: require('../../assets/images/logo.png'),
+    iconPath: homeIcon,
     text: '首页',
     path: '/home',
   },
   {
-    iconPath: require('../../assets/images/address.png'),
+    iconPath: mallIcon,
     text: '商城',
     path: '/mall',
   },
   {
-    iconPath: require('../../assets/images/logo.png'),
+    iconPath: userIcon,
     text: '我的',
     path: '/user',
   },

@@ -3,20 +3,33 @@ import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
 // 处理路由
 export const routerArray: RouteRecordRaw[] = []
 
-const importAll = (r: any) => {
-  r.keys().forEach((routerKey: any) => {
-    routerArray.push(...r(routerKey).default)
-  })
+// webpack require.context
+// const importAll = (r: any) => {
+//   r.keys().forEach((routerKey: any) => {
+//     routerArray.push(...r(routerKey).default)
+//   })
+// }
+
+// vite import
+const importAll = (modules: any) => {
+  for (const path in modules) {
+    routerArray.push(...modules[path].default)
+  }
 }
+
+let routerContext = {}
+
+// vite构建
+// @ts-ignore
+routerContext = import.meta.glob('./modules/*.ts', { eager: true })
+// webpack构建
 // require.context(directory,useSubdirectories,regExp)是webpack的api
 // 详见https://webpack.docschina.org/guides/dependency-management/#requirecontext
-const routerContext = require.context('./modules/', true, /\./)
+// routerContext = require.context('./modules/', true, /\./)
 
 // 导入所有的路由
 importAll(routerContext)
-routerContext.keys().forEach((routerKey: any) => {
-  routerArray.push(...routerContext(routerKey).default)
-})
+
 export const routes: RouteRecordRaw[] = [
   {
     path: '/',
@@ -34,6 +47,7 @@ export const routes: RouteRecordRaw[] = [
   },
   ...routerArray,
 ]
+console.log('routes', routes)
 const router = createRouter({
   history: createWebHashHistory(),
   routes,
