@@ -3,5 +3,6 @@
 src/assets
 src/icons
 public
+/index.html
 dist
 node_modules
