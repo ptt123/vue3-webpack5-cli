@@ -7,6 +7,7 @@ const { DefinePlugin } = require('webpack')
 const WindiCSSWebpackPlugin = require('windicss-webpack-plugin')
 // const { WebpackManifestPlugin } = require('webpack-manifest-plugin')
 const SpeedMeasurePlugin = require('speed-measure-webpack-plugin') // 打包速度分析
+const MyPlugin = require('./plugins/fileListPlugin .js')
 
 module.exports = {
   entry: getPath('../src/main.ts'), // 打包入口
@@ -36,6 +37,7 @@ module.exports = {
     new WindiCSSWebpackPlugin(),
     // new WebpackManifestPlugin(),
     new SpeedMeasurePlugin(),
+    new MyPlugin({ title: 'MyPlugin' }),
   ],
   resolve: {
     // 解析
@@ -90,8 +92,19 @@ module.exports = {
         test: /\.(js|ts)x?$/,
         include: getPath('../src'),
         exclude: /node_modules/, // 不编译node_modules下的文件
-        use: ['babel-loader'],
+        use: [
+          'babel-loader',
+          {
+            loader: 'drop-console-loader',
+            options: {
+              name: '前端',
+            },
+          },
+        ],
       },
     ],
+  },
+  resolveLoader: {
+    modules: ['node_modules', 'build/loader'],
   },
 }

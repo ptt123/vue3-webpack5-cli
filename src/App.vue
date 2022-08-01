@@ -14,6 +14,7 @@
 
 <script setup lang="ts">
 import Tabbar from '@/components/tabbar/index.vue'
+console.log('app')
 </script>
 
 <style scoped>
